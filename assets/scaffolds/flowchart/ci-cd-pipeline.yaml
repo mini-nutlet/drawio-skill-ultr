@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "name": "CI/CD Pipeline",
+    "version": "1.0",
+    "diagramType": "flowchart",
+    "layout": "FLOW",
+    "theme": "operations",
+    "mode": "dark",
+    "canvas": "ppt-16:9",
+    "title": "CI/CD 流水线",
+    "nodeCount": 10,
+    "description": "Source → Build → Test → Staging → Production with approval gates"
+  },
+  "nodes": [
+    { "id": "source", "label": "Source", "semantic": "compute", "x": 60, "y": 400, "width": 120, "height": 56 },
+    { "id": "build", "label": "Build", "semantic": "compute", "x": 240, "y": 400, "width": 120, "height": 56 },
+    { "id": "unit-test", "label": "Unit Test", "semantic": "compute", "x": 420, "y": 400, "width": 120, "height": 56 },
+    { "id": "lint", "label": "Lint", "semantic": "compute", "x": 420, "y": 500, "width": 120, "height": 56 },
+    { "id": "int-test", "label": "Integration Test", "semantic": "compute", "x": 600, "y": 400, "width": 130, "height": 56 },
+    { "id": "staging", "label": "Staging Deploy", "semantic": "network", "x": 790, "y": 400, "width": 130, "height": 56 },
+    { "id": "approval", "label": "Approval Gate", "shape": "rhombus", "x": 960, "y": 380, "width": 130, "height": 100 },
+    { "id": "prod", "label": "Production Deploy", "semantic": "security", "x": 1150, "y": 400, "width": 140, "height": 56, "bold": true },
+    { "id": "rollback", "label": "Rollback", "strokeColor": "#DC2626", "x": 1150, "y": 550, "width": 120, "height": 56 }
+  ],
+  "edges": [
+    { "from": "source", "to": "build", "type": "sync-call" },
+    { "from": "build", "to": "unit-test", "type": "sync-call" },
+    { "from": "build", "to": "lint", "type": "sync-call", "exitX": 0.5, "exitY": 1 },
+    { "from": "unit-test", "to": "int-test", "type": "sync-call" },
+    { "from": "int-test", "to": "staging", "type": "sync-call" },
+    { "from": "staging", "to": "approval", "type": "sync-call" },
+    { "from": "approval", "to": "prod", "type": "deployment", "label": "approved" },
+    { "from": "approval", "to": "staging", "type": "conditional", "exitX": 0.5, "exitY": 0, "label": "rejected" },
+    { "from": "prod", "to": "rollback", "type": "error-fallback", "exitX": 0.5, "exitY": 1, "label": "on failure" }
+  ]
+}

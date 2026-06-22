@@ -1,0 +1,19 @@
+{
+  "name": "Analytical", "mode": "dark", "approach": "B",
+  "description": "Deep violet-tinted cards.",
+  "colors": {
+    "pageBackground": "#0A0812",
+    "card": { "fill": "#1A1630" },
+    "stroke": { "default": "#A78BFA", "external": "#64748B", "security": "#F87171" },
+    "semantic": {
+      "compute": { "fill": "#2E1065" },
+      "storage": { "fill": "#1E1040" },
+      "network": { "fill": "#281860" },
+      "external": { "fill": "#1A1630" },
+      "security": { "fill": "#3F0A0A" },
+      "async": { "fill": "#3F1800" }
+    },
+    "zone": { "l1": { "stroke": "#2E2860" } },
+    "text": { "title": "#EDE9FE", "card": "#DDD6FE", "secondary": "#A78BFA" }
+  }
+}

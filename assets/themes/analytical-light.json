@@ -1,0 +1,19 @@
+{
+  "name": "Analytical", "mode": "light", "approach": "B",
+  "description": "Violet-tinted cards for data analysis.",
+  "colors": {
+    "pageBackground": "#FAFAFA",
+    "card": { "fill": "#FFFFFF" },
+    "stroke": { "default": "#1E293B", "external": "#94A3B8", "security": "#DC2626" },
+    "semantic": {
+      "compute": { "fill": "#F5F3FF" },
+      "storage": { "fill": "#EDE9FE" },
+      "network": { "fill": "#F3F0FF" },
+      "external": { "fill": "#FFFFFF" },
+      "security": { "fill": "#FEF2F2" },
+      "async": { "fill": "#FFF7ED" }
+    },
+    "zone": { "l1": { "stroke": "#DDD6FE" } },
+    "text": { "title": "#3B0764", "card": "#1E293B", "secondary": "#6D28D9" }
+  }
+}

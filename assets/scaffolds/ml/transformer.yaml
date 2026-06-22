@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "name": "Transformer Architecture",
+    "version": "1.0",
+    "diagramType": "ml-model",
+    "layout": "LAYERED",
+    "theme": "editorial",
+    "canvas": "a4-landscape",
+    "title": "Transformer Model Architecture",
+    "nodeCount": 16,
+    "description": "Standard Transformer encoder-decoder with multi-head attention and feed-forward blocks"
+  },
+  "nodes": [
+    { "id": "input-emb", "label": "Input Embedding", "layer": "encoder", "semantic": "compute", "x": 60, "y": 80, "width": 160, "height": 50 },
+    { "id": "enc-attn", "label": "Multi-Head Self-Attention", "layer": "encoder", "semantic": "compute", "x": 60, "y": 170, "width": 160, "height": 50 },
+    { "id": "enc-norm1", "label": "Add & Norm", "layer": "encoder", "semantic": "network", "x": 60, "y": 250, "width": 160, "height": 40 },
+    { "id": "enc-ffn", "label": "Feed Forward", "layer": "encoder", "semantic": "compute", "x": 60, "y": 320, "width": 160, "height": 50 },
+    { "id": "enc-norm2", "label": "Add & Norm", "layer": "encoder", "semantic": "network", "x": 60, "y": 400, "width": 160, "height": 40 },
+    { "id": "out-emb", "label": "Output Embedding", "layer": "decoder", "semantic": "compute", "x": 320, "y": 80, "width": 160, "height": 50 },
+    { "id": "dec-self-attn", "label": "Masked Self-Attention", "layer": "decoder", "semantic": "compute", "x": 320, "y": 170, "width": 160, "height": 50 },
+    { "id": "dec-norm1", "label": "Add & Norm", "layer": "decoder", "semantic": "network", "x": 320, "y": 250, "width": 160, "height": 40 },
+    { "id": "dec-cross-attn", "label": "Cross-Attention", "layer": "decoder", "semantic": "async", "x": 320, "y": 320, "width": 160, "height": 50 },
+    { "id": "dec-norm2", "label": "Add & Norm", "layer": "decoder", "semantic": "network", "x": 320, "y": 400, "width": 160, "height": 40 },
+    { "id": "dec-ffn", "label": "Feed Forward", "layer": "decoder", "semantic": "compute", "x": 320, "y": 480, "width": 160, "height": 50 },
+    { "id": "dec-norm3", "label": "Add & Norm", "layer": "decoder", "semantic": "network", "x": 320, "y": 560, "width": 160, "height": 40 },
+    { "id": "linear", "label": "Linear + Softmax", "layer": "decoder", "semantic": "security", "x": 320, "y": 640, "width": 160, "height": 50 }
+  ],
+  "edges": [
+    { "from": "input-emb", "to": "enc-attn", "type": "data-flow" },
+    { "from": "enc-attn", "to": "enc-norm1", "type": "data-flow" },
+    { "from": "enc-norm1", "to": "enc-ffn", "type": "data-flow" },
+    { "from": "enc-ffn", "to": "enc-norm2", "type": "data-flow" },
+    { "from": "enc-norm2", "to": "dec-cross-attn", "type": "data-flow", "exitX": 1, "exitY": 0.5 },
+    { "from": "out-emb", "to": "dec-self-attn", "type": "data-flow" },
+    { "from": "dec-self-attn", "to": "dec-norm1", "type": "data-flow" },
+    { "from": "dec-norm1", "to": "dec-cross-attn", "type": "data-flow" },
+    { "from": "dec-cross-attn", "to": "dec-norm2", "type": "data-flow" },
+    { "from": "dec-norm2", "to": "dec-ffn", "type": "data-flow" },
+    { "from": "dec-ffn", "to": "dec-norm3", "type": "data-flow" },
+    { "from": "dec-norm3", "to": "linear", "type": "data-flow" }
+  ]
+}

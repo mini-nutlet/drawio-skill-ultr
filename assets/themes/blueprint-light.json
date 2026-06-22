@@ -1,0 +1,17 @@
+{
+  "name": "Blueprint", "mode": "light", "approach": "A",
+  "description": "Clean black-stroke cards on white. Minimal, PPT-perfect.",
+  "colors": {
+    "pageBackground": "#FFFFFF",
+    "card": { "fill": "#FFFFFF" },
+    "stroke": {
+      "default": "#1E293B",
+      "external": "#94A3B8",
+      "security": "#DC2626"
+    },
+    "zone": {
+      "l1": { "stroke": "#CBD5E1" }
+    },
+    "text": { "title": "#0F172A", "card": "#1E293B", "secondary": "#64748B" }
+  }
+}

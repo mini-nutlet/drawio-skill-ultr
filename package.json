@@ -1,0 +1,27 @@
+{
+  "name": "drawio-skill-ultr",
+  "version": "1.0.0",
+  "description": "The definitive draw.io diagram skill — YAML-first, PPT-optimized, Desktop CLI powered.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mini-nutlet/drawio-skill-ultr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mini-nutlet/drawio-skill-ultr/issues"
+  },
+  "homepage": "https://github.com/mini-nutlet/drawio-skill-ultr#readme",
+  "dependencies": {
+    "elkjs": "^0.11.1"
+  }
+}

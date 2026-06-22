@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "name": "Core Business ER Diagram",
+    "version": "1.0",
+    "diagramType": "er-diagram",
+    "layout": "GRID",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "核心业务 ER 图",
+    "nodeCount": 6,
+    "description": "User + Project + Task + Comment + Tag + TaskTag — classic project management schema"
+  },
+  "nodes": [
+    { "id": "User", "label": "User", "semantic": "core-entity", "x": 40, "y": 80, "width": 200, "height": 160 },
+    { "id": "Project", "label": "Project", "semantic": "core-entity", "x": 340, "y": 80, "width": 200, "height": 140 },
+    { "id": "Task", "label": "Task", "semantic": "core-entity", "x": 640, "y": 80, "width": 220, "height": 200 },
+    { "id": "Comment", "label": "Comment", "semantic": "core-entity", "x": 960, "y": 80, "width": 180, "height": 130 },
+    { "id": "Tag", "label": "Tag", "semantic": "lookup", "x": 960, "y": 300, "width": 180, "height": 90 },
+    { "id": "TaskTag", "label": "TaskTag", "semantic": "join-table", "x": 700, "y": 350, "width": 160, "height": 80 }
+  ],
+  "edges": [
+    { "from": "User", "to": "Project", "label": "1..N" },
+    { "from": "Project", "to": "Task", "label": "1..N" },
+    { "from": "User", "to": "Task", "label": "N..1 (assignee)" },
+    { "from": "Task", "to": "Comment", "label": "1..N" },
+    { "from": "User", "to": "Comment", "label": "N..1 (author)" },
+    { "from": "Task", "to": "TaskTag", "label": "1..N" },
+    { "from": "Tag", "to": "TaskTag", "label": "1..N" }
+  ]
+}

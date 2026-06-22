@@ -1,0 +1,11 @@
+{
+  "name": "Editorial", "mode": "dark", "approach": "A",
+  "description": "Light strokes on dark cards.",
+  "colors": {
+    "pageBackground": "#0A0A0A",
+    "card": { "fill": "#171717" },
+    "stroke": { "default": "#A3A3A3", "external": "#737373", "security": "#EF4444" },
+    "zone": { "l1": { "stroke": "#2A2A2A" } },
+    "text": { "title": "#FAFAFA", "card": "#E5E5E5", "secondary": "#A3A3A3" }
+  }
+}

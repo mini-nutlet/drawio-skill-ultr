@@ -1,0 +1,11 @@
+{
+  "name": "Editorial", "mode": "light", "approach": "A",
+  "description": "Black on white. Academic — no color distractions.",
+  "colors": {
+    "pageBackground": "#FFFFFF",
+    "card": { "fill": "#FFFFFF" },
+    "stroke": { "default": "#374151", "external": "#9CA3AF", "security": "#DC2626" },
+    "zone": { "l1": { "stroke": "#D1D5DB" } },
+    "text": { "title": "#111827", "card": "#1F2937", "secondary": "#6B7280" }
+  }
+}

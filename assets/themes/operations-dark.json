@@ -1,0 +1,11 @@
+{
+  "name": "Operations", "mode": "dark", "approach": "A",
+  "description": "Dark dashboard — bright strokes for high visibility.",
+  "colors": {
+    "pageBackground": "#0B1120",
+    "card": { "fill": "#111D32" },
+    "stroke": { "default": "#94A3B8", "external": "#64748B", "security": "#F87171" },
+    "zone": { "l1": { "stroke": "#1E3A5F" } },
+    "text": { "title": "#F8FAFC", "card": "#E2E8F0", "secondary": "#94A3B8" }
+  }
+}

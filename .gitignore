@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Generated output
+output/
+
+# draw.io temporary files
+*.dtmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Export artifacts (optional — keep if you want to track generated diagrams)
+# output/*.svg
+# output/*.png
+# output/*.jpg
+# output/*.pdf

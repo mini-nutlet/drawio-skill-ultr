@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "name": "用户登录流程",
+    "version": "1.0",
+    "diagramType": "flowchart",
+    "layout": "FLOW",
+    "theme": "narrative",
+    "canvas": "ppt-16:9",
+    "title": "用户登录流程图"
+  },
+  "nodes": [
+    { "id": "start", "label": "开始", "shape": "ellipse", "x": 60, "y": 480, "width": 80 },
+    { "id": "input", "label": "输入账号密码", "semantic": "compute", "x": 200, "y": 460, "width": 140 },
+    { "id": "validate", "label": "验证账号", "shape": "rhombus", "x": 400, "y": 440, "width": 110 },
+    { "id": "check-mfa", "label": "需要MFA?", "shape": "rhombus", "x": 580, "y": 440, "width": 110 },
+    { "id": "mfa-verify", "label": "MFA验证码", "semantic": "security", "x": 770, "y": 460, "width": 130 },
+    { "id": "issue-jwt", "label": "签发JWT令牌", "semantic": "security", "x": 960, "y": 460, "width": 130 },
+    { "id": "success", "label": "登录成功", "semantic": "compute", "x": 1160, "y": 460, "width": 120, "bold": true },
+    { "id": "error-msg", "label": "显示错误信息", "strokeColor": "#DC2626", "x": 400, "y": 620, "width": 130 },
+    { "id": "lock-account", "label": "锁定账号", "semantic": "security", "x": 580, "y": 620, "width": 120 },
+    { "id": "end", "label": "结束", "shape": "ellipse", "x": 1340, "y": 475, "width": 80 }
+  ],
+  "edges": [
+    { "from": "start", "to": "input", "type": "sync-call" },
+    { "from": "input", "to": "validate", "type": "sync-call" },
+    { "from": "validate", "to": "check-mfa", "type": "sync-call" },
+    { "from": "check-mfa", "to": "mfa-verify", "type": "sync-call", "label": "需要" },
+    { "from": "check-mfa", "to": "issue-jwt", "type": "sync-call", "label": "不需要", "exitX": 0.5, "exitY": 1 },
+    { "from": "mfa-verify", "to": "issue-jwt", "type": "sync-call" },
+    { "from": "issue-jwt", "to": "success", "type": "sync-call" },
+    { "from": "success", "to": "end", "type": "sync-call" },
+    { "from": "validate", "to": "error-msg", "type": "error-fallback", "exitX": 0.5, "exitY": 1, "label": "失败" },
+    { "from": "error-msg", "to": "input", "type": "conditional", "exitX": 0, "exitY": 0.5, "label": "重试" },
+    { "from": "error-msg", "to": "lock-account", "type": "error-fallback", "exitX": 1, "exitY": 0.5, "label": "超过3次" }
+  ]
+}

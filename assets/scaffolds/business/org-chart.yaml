@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "name": "Organization Chart",
+    "version": "1.0",
+    "diagramType": "flowchart",
+    "layout": "TREE",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "组织架构图",
+    "nodeCount": 12,
+    "description": "Hierarchical org chart with C-level → VP → Director → Manager → IC roles"
+  },
+  "nodes": [
+    { "id": "ceo", "label": "CEO", "layer": "exec", "semantic": "compute", "x": 800, "y": 60, "width": 140, "height": 56, "bold": true },
+    { "id": "cto", "label": "CTO", "layer": "exec", "semantic": "network", "x": 400, "y": 200, "width": 140, "height": 56 },
+    { "id": "cfo", "label": "CFO", "layer": "exec", "semantic": "network", "x": 1200, "y": 200, "width": 140, "height": 56 },
+    { "id": "vp-eng", "label": "VP Engineering", "layer": "vp", "semantic": "compute", "x": 200, "y": 350, "width": 140, "height": 56 },
+    { "id": "vp-product", "label": "VP Product", "layer": "vp", "semantic": "compute", "x": 600, "y": 350, "width": 140, "height": 56 },
+    { "id": "dir-be", "label": "Director Backend", "layer": "dir", "semantic": "compute", "x": 80, "y": 500, "width": 140, "height": 56 },
+    { "id": "dir-fe", "label": "Director Frontend", "layer": "dir", "semantic": "compute", "x": 320, "y": 500, "width": 140, "height": 56 },
+    { "id": "mgr-be", "label": "Eng Manager", "layer": "mgr", "semantic": "compute", "x": 80, "y": 640, "width": 140, "height": 56 },
+    { "id": "ic1", "label": "Senior Engineer", "layer": "ic", "semantic": "compute", "x": 20, "y": 770, "width": 140, "height": 56 },
+    { "id": "ic2", "label": "Engineer", "layer": "ic", "semantic": "compute", "x": 200, "y": 770, "width": 140, "height": 56 }
+  ],
+  "edges": [
+    { "from": "ceo", "to": "cto", "type": "sync-call" },
+    { "from": "ceo", "to": "cfo", "type": "sync-call" },
+    { "from": "cto", "to": "vp-eng", "type": "sync-call" },
+    { "from": "cto", "to": "vp-product", "type": "sync-call" },
+    { "from": "vp-eng", "to": "dir-be", "type": "sync-call" },
+    { "from": "vp-eng", "to": "dir-fe", "type": "sync-call" },
+    { "from": "dir-be", "to": "mgr-be", "type": "sync-call" },
+    { "from": "mgr-be", "to": "ic1", "type": "sync-call" },
+    { "from": "mgr-be", "to": "ic2", "type": "sync-call" }
+  ]
+}

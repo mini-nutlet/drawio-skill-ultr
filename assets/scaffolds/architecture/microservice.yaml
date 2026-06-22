@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "name": "Microservice Architecture",
+    "version": "1.0",
+    "diagramType": "architecture",
+    "layout": "LAYERED",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "微服务架构",
+    "nodeCount": 12,
+    "description": "5 services + API Gateway + Message Queue + 3-layer data storage"
+  },
+  "zones": [
+    { "id": "zone-edge", "layer": "edge", "label": "接入层" },
+    { "id": "zone-services", "layer": "services", "label": "服务层" },
+    { "id": "zone-data", "layer": "data", "label": "数据层" }
+  ],
+  "nodes": [
+    { "id": "api-gw", "label": "API Gateway", "layer": "edge" },
+    { "id": "svc1", "label": "用户服务", "layer": "services" },
+    { "id": "svc2", "label": "订单服务", "layer": "services" },
+    { "id": "svc3", "label": "支付服务", "layer": "services" },
+    { "id": "svc4", "label": "商品服务", "layer": "services" },
+    { "id": "svc5", "label": "通知服务", "layer": "services" },
+    { "id": "mq", "label": "消息队列", "layer": "services", "semantic": "async", "shape": "hexagon", "x": 480, "y": 400, "width": 130 },
+    { "id": "db-primary", "label": "主数据库", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 200, "y": 590, "width": 120 },
+    { "id": "db-cache", "label": "缓存", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 500, "y": 590, "width": 110 },
+    { "id": "db-search", "label": "搜索引擎", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 800, "y": 590, "width": 120 }
+  ],
+  "edges": [
+    { "id": "e-gw-1", "from": "api-gw", "to": "svc1", "type": "sync-call" },
+    { "id": "e-gw-2", "from": "api-gw", "to": "svc2", "type": "sync-call" },
+    { "id": "e-gw-3", "from": "api-gw", "to": "svc3", "type": "sync-call" },
+    { "id": "e-gw-4", "from": "api-gw", "to": "svc4", "type": "sync-call" },
+    { "id": "e-gw-5", "from": "api-gw", "to": "svc5", "type": "sync-call" },
+    { "id": "e-svc-mq", "from": "svc1", "to": "mq", "type": "async-event", "exitX": 1, "exitY": 0.5 },
+    { "id": "e-svc2-mq", "from": "svc2", "to": "mq", "type": "async-event", "exitX": 1, "exitY": 0.5 },
+    { "id": "e-svc-db", "from": "svc1", "to": "db-primary", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "id": "e-svc-cache", "from": "svc1", "to": "db-cache", "type": "data-flow", "exitX": 0.5, "exitY": 1 }
+  ]
+}

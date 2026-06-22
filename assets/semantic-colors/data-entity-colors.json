@@ -1,0 +1,11 @@
+{
+  "description": "Data entity colors for ER diagrams. Each entity type has a distinct header color.",
+  "entities": {
+    "core-entity":    { "fill": "#E3F2FD", "stroke": "#1E88E5", "headerBg": "#1565C0", "meaning": "Core business entity" },
+    "lookup":         { "fill": "#F5F5F5", "stroke": "#757575", "headerBg": "#616161", "meaning": "Dictionary / enum table" },
+    "join-table":     { "fill": "#FFF8E1", "stroke": "#FFB300", "headerBg": "#F57F17", "meaning": "N:N intermediate table" },
+    "audit-log":      { "fill": "#ECEFF1", "stroke": "#90A4AE", "headerBg": "#78909C", "meaning": "Audit log table" },
+    "cache":          { "fill": "#FFF3E0", "stroke": "#FB8C00", "headerBg": "#EF6C00", "meaning": "Cache / temp table" },
+    "external-ref":   { "fill": "#FCE4EC", "stroke": "#E91E63", "headerBg": "#C2185B", "meaning": "External system reference" }
+  }
+}

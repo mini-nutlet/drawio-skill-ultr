@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "name": "AWS VPC Architecture",
+    "version": "1.0",
+    "diagramType": "network-topology",
+    "layout": "LAYERED",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "AWS VPC 架构",
+    "nodeCount": 12,
+    "description": "VPC with Public Subnet (ALB+Bastion+NAT) and Private Subnet (App+DB+Cache)"
+  },
+  "zones": [
+    { "id": "zone-region", "layer": "region", "label": "AWS (ap-northeast-1)" },
+    { "id": "zone-vpc", "layer": "vpc", "label": "VPC (10.0.0.0/16)" },
+    { "id": "zone-pub", "layer": "pub", "label": "Public Subnet" },
+    { "id": "zone-priv", "layer": "priv", "label": "Private Subnet" }
+  ],
+  "nodes": [
+    { "id": "igw", "label": "Internet Gateway" },
+    { "id": "alb", "label": "ALB" },
+    { "id": "nat", "label": "NAT Gateway" },
+    { "id": "bastion", "label": "Bastion" },
+    { "id": "app1", "label": "App Server 1" },
+    { "id": "app2", "label": "App Server 2" },
+    { "id": "db", "label": "RDS MySQL", "layer": "l3", "semantic": "storage", "shape": "cylinder3", "x": 530, "y": 450, "width": 120 },
+    { "id": "cache", "label": "ElastiCache", "layer": "l3", "semantic": "storage", "shape": "cylinder3", "x": 700, "y": 450, "width": 120 }
+  ],
+  "edges": [
+    { "from": "igw", "to": "alb", "type": "sync-call", "label": "HTTPS" },
+    { "from": "alb", "to": "app1", "type": "sync-call", "label": "HTTPS" },
+    { "from": "alb", "to": "app2", "type": "sync-call", "label": "HTTPS" },
+    { "from": "app1", "to": "db", "type": "data-flow", "label": "SQL", "exitX": 0.5, "exitY": 1 },
+    { "from": "app1", "to": "cache", "type": "data-flow", "exitX": 1, "exitY": 0.5 }
+  ]
+}

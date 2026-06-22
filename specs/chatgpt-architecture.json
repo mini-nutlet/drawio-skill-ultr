@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "name": "ChatGPT System Architecture",
+    "diagramType": "architecture",
+    "direction": "TB",
+    "theme": "blueprint",
+    "mode": "light",
+    "canvas": "ppt-16:9",
+    "zoneMode": "divider",
+    "title": "ChatGPT Architecture",
+    "description": "5-layer ChatGPT system architecture with inference, RAG, plugins, and data ops"
+  },
+  "zones": [
+    { "id": "zone-core", "layer": "core", "label": "Core" },
+    { "id": "zone-services", "layer": "services", "label": "Services" },
+    { "id": "zone-infra", "layer": "infra", "label": "Infrastructure" },
+    { "id": "zone-data", "layer": "data", "label": "Data & Storage" },
+    { "id": "zone-client", "layer": "client", "label": "Clients" }
+  ],
+  "nodes": [
+    { "id": "n-orch", "label": "ChatGPT Orchestrator", "layer": "core", "semantic": "compute", "fillColor": "#EFF6FF", "strokeColor": "#2563EB", "fontColor": "#1E40AF" },
+    { "id": "n-session", "label": "Session Manager", "layer": "services" },
+    { "id": "n-plugin", "label": "Plugin Engine", "layer": "services" },
+    { "id": "n-mod", "label": "Content Moderation", "layer": "services", "semantic": "security" },
+    { "id": "n-infer", "label": "GPT Model Inference", "layer": "services" },
+    { "id": "n-embed", "label": "Embedding Service", "layer": "services" },
+    { "id": "n-lb", "label": "Load Balancer", "layer": "infra" },
+    { "id": "n-rate", "label": "Rate Limiter", "layer": "infra" },
+    { "id": "n-auth", "label": "Auth Service", "layer": "infra", "semantic": "security" },
+    { "id": "n-router", "label": "API Router", "layer": "infra" },
+    { "id": "n-mon", "label": "Monitoring & Analytics", "layer": "infra" },
+    { "id": "n-vec", "label": "Vector Database", "layer": "data", "shape": "cylinder3" },
+    { "id": "n-kb", "label": "Knowledge Base", "layer": "data", "shape": "cylinder3" },
+    { "id": "n-conv", "label": "Conversation Store", "layer": "data", "shape": "cylinder3" },
+    { "id": "n-userdb", "label": "User Database", "layer": "data", "shape": "cylinder3" },
+    { "id": "n-reg", "label": "Model Registry", "layer": "data" },
+    { "id": "n-web", "label": "Web App", "layer": "client" },
+    { "id": "n-mobile", "label": "Mobile App", "layer": "client" },
+    { "id": "n-apiclient", "label": "API Client", "layer": "client" }
+  ],
+  "groups": [
+    { "id": "grp-core", "label": "ChatGPT Core", "nodes": ["n-orch", "n-session", "n-plugin", "n-mod"], "fill": "#EFF6FF", "stroke": "#2563EB" },
+    { "id": "grp-ai", "label": "AI & Inference", "nodes": ["n-infer", "n-embed"], "fill": "#F5F3FF", "stroke": "#7C3AED" },
+    { "id": "grp-data", "label": "Data Storage", "nodes": ["n-vec", "n-kb", "n-conv", "n-userdb", "n-reg"], "fill": "#FFF7ED", "stroke": "#EA580C" },
+    { "id": "grp-gateway", "label": "API Gateway", "nodes": ["n-lb", "n-rate", "n-auth", "n-router", "n-mon"], "fill": "#F8FAFC", "stroke": "#94A3B8" },
+    { "id": "grp-client", "label": "Clients", "nodes": ["n-web", "n-mobile", "n-apiclient"], "fill": "#F0FDF4", "stroke": "#16A34A" }
+  ],
+  "edges": [
+    { "id": "e1", "from": "n-web", "to": "n-lb", "type": "sync-call", "label": "HTTPS" },
+    { "id": "e2", "from": "n-mobile", "to": "n-lb", "type": "sync-call" },
+    { "id": "e3", "from": "n-apiclient", "to": "n-lb", "type": "sync-call" },
+    { "id": "e4", "from": "n-lb", "to": "n-rate", "type": "sync-call" },
+    { "id": "e5", "from": "n-rate", "to": "n-auth", "type": "sync-call" },
+    { "id": "e6", "from": "n-auth", "to": "n-router", "type": "auth-trust", "label": "JWT" },
+    { "id": "e7", "from": "n-router", "to": "n-orch", "type": "sync-call", "label": "REST/gRPC" },
+    { "id": "e8", "from": "n-orch", "to": "n-session", "type": "sync-call" },
+    { "id": "e9", "from": "n-orch", "to": "n-plugin", "type": "sync-call" },
+    { "id": "e10", "from": "n-orch", "to": "n-mod", "type": "sync-call" },
+    { "id": "e11", "from": "n-orch", "to": "n-infer", "type": "sync-call", "label": "sync-call" },
+    { "id": "e12", "from": "n-orch", "to": "n-embed", "type": "data-flow", "label": "RAG" },
+    { "id": "e13", "from": "n-embed", "to": "n-vec", "type": "data-flow", "label": "search" },
+    { "id": "e14", "from": "n-orch", "to": "n-kb", "type": "data-flow", "label": "retrieve" },
+    { "id": "e15", "from": "n-session", "to": "n-conv", "type": "data-flow", "label": "log" },
+    { "id": "e16", "from": "n-auth", "to": "n-userdb", "type": "auth-trust" },
+    { "id": "e17", "from": "n-infer", "to": "n-reg", "type": "deployment", "label": "deploy" },
+    { "id": "e18", "from": "n-mon", "to": "n-orch", "type": "conditional", "label": "metrics" },
+    { "id": "e19", "from": "n-mon", "to": "n-infer", "type": "conditional" }
+  ]
+}

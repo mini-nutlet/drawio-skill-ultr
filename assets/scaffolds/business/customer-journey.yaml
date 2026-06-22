@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "name": "Customer Journey Map",
+    "version": "1.0",
+    "diagramType": "flowchart",
+    "layout": "GRID",
+    "theme": "narrative",
+    "canvas": "ppt-16:9",
+    "title": "客户旅程图",
+    "nodeCount": 20,
+    "description": "5-phase customer journey with actions, touchpoints, emotions, pain points, and opportunities"
+  },
+  "nodes": [
+    { "id": "phase1", "label": "认知", "layer": "phases", "semantic": "compute", "x": 60, "y": 80, "width": 200, "height": 40 },
+    { "id": "phase2", "label": "注册", "layer": "phases", "semantic": "compute", "x": 310, "y": 80, "width": 200, "height": 40 },
+    { "id": "phase3", "label": "首次使用", "layer": "phases", "semantic": "compute", "x": 560, "y": 80, "width": 200, "height": 40 },
+    { "id": "phase4", "label": "日常使用", "layer": "phases", "semantic": "compute", "x": 810, "y": 80, "width": 200, "height": 40 },
+    { "id": "phase5", "label": "推荐", "layer": "phases", "semantic": "compute", "x": 1060, "y": 80, "width": 200, "height": 40 },
+    { "id": "action1", "label": "搜索产品", "layer": "actions", "semantic": "compute", "x": 80, "y": 160, "width": 160, "height": 50 },
+    { "id": "action2", "label": "填写注册信息", "layer": "actions", "semantic": "compute", "x": 330, "y": 160, "width": 160, "height": 50 },
+    { "id": "action3", "label": "完成首个任务", "layer": "actions", "semantic": "compute", "x": 580, "y": 160, "width": 160, "height": 50 },
+    { "id": "action4", "label": "每日使用", "layer": "actions", "semantic": "compute", "x": 830, "y": 160, "width": 160, "height": 50 },
+    { "id": "action5", "label": "分享给同事", "layer": "actions", "semantic": "compute", "x": 1080, "y": 160, "width": 160, "height": 50 },
+    { "id": "pain1", "label": "找到合适方案难", "layer": "pain", "semantic": "external", "x": 80, "y": 260, "width": 160, "height": 50 },
+    { "id": "pain2", "label": "注册步骤繁琐", "layer": "pain", "semantic": "external", "x": 330, "y": 260, "width": 160, "height": 50, "strokeColor": "#EC4899" },
+    { "id": "pain3", "label": "新手引导不足", "layer": "pain", "semantic": "external", "x": 580, "y": 260, "width": 160, "height": 50, "strokeColor": "#EC4899" },
+    { "id": "opp1", "label": "优化落地页", "layer": "opps", "semantic": "compute", "x": 80, "y": 370, "width": 160, "height": 50, "bold": true },
+    { "id": "opp2", "label": "简化注册", "layer": "opps", "semantic": "compute", "x": 330, "y": 370, "width": 160, "height": 50, "bold": true },
+    { "id": "opp3", "label": "交互式引导", "layer": "opps", "semantic": "compute", "x": 580, "y": 370, "width": 160, "height": 50, "bold": true }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Narrative", "mode": "light", "approach": "B",
+  "description": "Warm-tinted cards for storytelling.",
+  "colors": {
+    "pageBackground": "#FFFBEB",
+    "card": { "fill": "#FFFFFF" },
+    "stroke": { "default": "#1E293B", "external": "#94A3B8", "security": "#DC2626" },
+    "semantic": {
+      "compute": { "fill": "#ECFDF5" },
+      "storage": { "fill": "#F0FDF4" },
+      "network": { "fill": "#F8FAFC" },
+      "external": { "fill": "#FFF7ED" },
+      "security": { "fill": "#FEF2F2" },
+      "async": { "fill": "#FFFBEB" }
+    },
+    "zone": { "l1": { "stroke": "#FCD34D" } },
+    "text": { "title": "#451A03", "card": "#1E293B", "secondary": "#A16207" }
+  }
+}

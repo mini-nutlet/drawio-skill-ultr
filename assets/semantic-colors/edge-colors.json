@@ -1,0 +1,12 @@
+{
+  "description": "Edge color semantics — these override theme edge colors because edge color conveys communication meaning, not visual style.",
+  "edges": {
+    "sync-call":      { "color": "#475569", "style": "solid", "width": 1.5, "meaning": "Synchronous request-response (HTTPS/gRPC/REST)" },
+    "async-event":    { "color": "#D97706", "style": "dashed", "width": 1.0, "dashPattern": "6 4", "meaning": "Asynchronous events/messages (Kafka/MQ)" },
+    "data-flow":      { "color": "#7C3AED", "style": "solid", "width": 1.5, "meaning": "Data flow direction (ETL/SQL/read-write)" },
+    "auth-trust":     { "color": "#CC00DC", "style": "solid", "width": 1.5, "meaning": "Authentication/trust relationship (SAML/OIDC/JWT)" },
+    "error-fallback": { "color": "#DC2626", "style": "solid", "width": 1.5, "meaning": "Error/fallback path" },
+    "conditional":    { "color": "#0891B2", "style": "dashed", "width": 1.0, "dashPattern": "4 4", "meaning": "Conditional branch / optional path" },
+    "deployment":     { "color": "#059669", "style": "solid", "width": 1.0, "meaning": "Deployment / release flow" }
+  }
+}

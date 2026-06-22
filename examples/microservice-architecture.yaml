@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "name": "电商微服务架构",
+    "version": "1.0",
+    "diagramType": "architecture",
+    "layout": "LAYERED",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "电商平台微服务架构图"
+  },
+  "zones": [
+    { "id": "zone-edge", "label": "接入层" },
+    { "id": "zone-svc", "label": "服务层" },
+    { "id": "zone-data", "label": "数据层" }
+  ],
+  "nodes": [
+    { "id": "cdn", "label": "CDN" },
+    { "id": "lb", "label": "负载均衡" },
+    { "id": "gw", "label": "API Gateway" },
+    { "id": "waf", "label": "WAF" },
+    { "id": "svc-user", "label": "用户服务" },
+    { "id": "svc-order", "label": "订单服务" },
+    { "id": "svc-pay", "label": "支付服务" },
+    { "id": "svc-product", "label": "商品服务" },
+    { "id": "svc-notify", "label": "通知服务" },
+    { "id": "kafka", "label": "Kafka 事件总线", "layer": "services", "semantic": "async", "shape": "hexagon", "x": 780, "y": 390, "width": 160 },
+    { "id": "db-mysql", "label": "MySQL 主库", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 150, "y": 560, "width": 120 },
+    { "id": "db-redis", "label": "Redis 缓存", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 400, "y": 560, "width": 110 },
+    { "id": "db-es", "label": "Elasticsearch", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 640, "y": 560, "width": 120 },
+    { "id": "db-mongo", "label": "MongoDB 日志", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 880, "y": 560, "width": 120 }
+  ],
+  "edges": [
+    { "from": "gw", "to": "svc-user", "type": "sync-call" },
+    { "from": "gw", "to": "svc-order", "type": "sync-call" },
+    { "from": "gw", "to": "svc-pay", "type": "sync-call" },
+    { "from": "gw", "to": "svc-product", "type": "sync-call" },
+    { "from": "gw", "to": "svc-notify", "type": "sync-call" },
+    { "from": "svc-order", "to": "kafka", "type": "async-event", "exitX": 1, "exitY": 0.5 },
+    { "from": "svc-pay", "to": "kafka", "type": "async-event", "exitX": 1, "exitY": 0.5 },
+    { "from": "svc-user", "to": "db-mysql", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "from": "svc-order", "to": "db-mysql", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "from": "svc-user", "to": "db-redis", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "from": "svc-product", "to": "db-es", "type": "data-flow", "exitX": 0.5, "exitY": 1 }
+  ]
+}

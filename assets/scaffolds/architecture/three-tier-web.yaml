@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "name": "Three-Tier Web Architecture",
+    "version": "1.0",
+    "diagramType": "architecture",
+    "layout": "LAYERED",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "三层 Web 架构",
+    "nodeCount": 8,
+    "description": "Classic LB → App → DB three-tier architecture"
+  },
+  "zones": [
+    { "id": "zone-web", "layer": "web", "label": "Web Tier" },
+    { "id": "zone-app", "layer": "app", "label": "Application Tier" },
+    { "id": "zone-data", "layer": "data", "label": "Data Tier" }
+  ],
+  "nodes": [
+    { "id": "lb", "label": "Load Balancer" },
+    { "id": "app1", "label": "App Server 1" },
+    { "id": "app2", "label": "App Server 2" },
+    { "id": "app3", "label": "App Server 3" },
+    { "id": "cache", "label": "Cache", "layer": "app", "semantic": "async", "shape": "cylinder3", "x": 960, "y": 320, "width": 100 },
+    { "id": "db-primary", "label": "Primary DB", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 300, "y": 550, "width": 120 },
+    { "id": "db-replica", "label": "Read Replica", "layer": "data", "semantic": "storage", "shape": "cylinder3", "x": 600, "y": 550, "width": 120 }
+  ],
+  "edges": [
+    { "from": "lb", "to": "app1", "type": "sync-call" },
+    { "from": "lb", "to": "app2", "type": "sync-call" },
+    { "from": "lb", "to": "app3", "type": "sync-call" },
+    { "from": "app1", "to": "cache", "type": "data-flow", "exitX": 1, "exitY": 0.5 },
+    { "from": "app1", "to": "db-primary", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "from": "app1", "to": "db-replica", "type": "data-flow", "exitX": 0.5, "exitY": 1 }
+  ]
+}

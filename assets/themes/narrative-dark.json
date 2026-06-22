@@ -1,0 +1,19 @@
+{
+  "name": "Narrative", "mode": "dark", "approach": "B",
+  "description": "Deep warm-tinted cards.",
+  "colors": {
+    "pageBackground": "#1A1208",
+    "card": { "fill": "#241A0C" },
+    "stroke": { "default": "#A3A3A3", "external": "#78716C", "security": "#F87171" },
+    "semantic": {
+      "compute": { "fill": "#022C16" },
+      "storage": { "fill": "#064E3B" },
+      "network": { "fill": "#1E293B" },
+      "external": { "fill": "#3F1800" },
+      "security": { "fill": "#3F0A0A" },
+      "async": { "fill": "#3F2000" }
+    },
+    "zone": { "l1": { "stroke": "#3D2E18" } },
+    "text": { "title": "#FFFBEB", "card": "#FDE68A", "secondary": "#D4A574" }
+  }
+}

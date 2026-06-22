@@ -1,0 +1,29 @@
+{
+  "description": "Quick-reference index of commonly used draw.io built-in shapes",
+  "builtin": {
+    "rounded-rectangle": { "style": "rounded=1;whiteSpace=wrap;html=1", "use": "Service / container / card" },
+    "rectangle": { "style": "whiteSpace=wrap;html=1", "use": "Plain box / boundary" },
+    "ellipse": { "style": "ellipse;whiteSpace=wrap;html=1", "use": "Start / end / state" },
+    "rhombus": { "style": "rhombus;whiteSpace=wrap;html=1", "use": "Decision / gateway" },
+    "cylinder3": { "style": "shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=8", "use": "Database / storage" },
+    "hexagon": { "style": "shape=hexagon;whiteSpace=wrap;html=1;perimeter=hexagonPerimeter", "use": "Message queue / event bus" },
+    "step": { "style": "shape=step;whiteSpace=wrap;html=1;perimeter=stepPerimeter", "use": "Phase / stage" },
+    "swimlane": { "style": "swimlane;whiteSpace=wrap;html=1;startSize=30", "use": "Lane / container with title" },
+    "text": { "style": "text;html=1;strokeColor=none;fillColor=none", "use": "Free text annotation" }
+  },
+  "cloud-providers": {
+    "aws-ec2": "mxgraph.aws4.resourceIcon;grp=aws4;resId=ec2",
+    "aws-s3": "mxgraph.aws4.resourceIcon;grp=aws4;resId=s3",
+    "aws-lambda": "mxgraph.aws4.resourceIcon;grp=aws4;resId=lambda",
+    "aws-rds": "mxgraph.aws4.resourceIcon;grp=aws4;resId=rds",
+    "aws-elb": "mxgraph.aws4.resourceIcon;grp=aws4;resId=elb",
+    "gcp-ce": "mxgraph.gcp2.compute_engine",
+    "azure-vm": "mxgraph.azure2.virtual_machines"
+  },
+  "kubernetes": {
+    "pod": "mxgraph.kubernetes.icon;grp=k8s;resId=pod",
+    "node": "mxgraph.kubernetes.icon;grp=k8s;resId=node",
+    "svc": "mxgraph.kubernetes.icon;grp=k8s;resId=svc",
+    "deploy": "mxgraph.kubernetes.icon;grp=k8s;resId=deploy"
+  }
+}

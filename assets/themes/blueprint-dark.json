@@ -1,0 +1,17 @@
+{
+  "name": "Blueprint", "mode": "dark", "approach": "A",
+  "description": "Dark cards with light-grey strokes.",
+  "colors": {
+    "pageBackground": "#0F172A",
+    "card": { "fill": "#1E293B" },
+    "stroke": {
+      "default": "#94A3B8",
+      "external": "#64748B",
+      "security": "#F87171"
+    },
+    "zone": {
+      "l1": { "stroke": "#334155" }
+    },
+    "text": { "title": "#F8FAFC", "card": "#E2E8F0", "secondary": "#94A3B8" }
+  }
+}

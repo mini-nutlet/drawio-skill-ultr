@@ -1,0 +1,17 @@
+{
+  "description": "Status/state colors for flowchart nodes. These supplement (not replace) the active theme's semantic colors.",
+  "statuses": {
+    "start":          { "fill": "#E8F5E9", "stroke": "#2E7D32", "shape": "ellipse",   "meaning": "Flow start point" },
+    "end":            { "fill": "#FFEBEE", "stroke": "#C62828", "shape": "ellipse",   "meaning": "Flow end point", "doubleStroke": true },
+    "processing":     { "fill": "#E3F2FD", "stroke": "#1565C0", "shape": "rounded",   "meaning": "Processing step" },
+    "decision":       { "fill": "#FFF8E1", "stroke": "#F57F17", "shape": "rhombus",   "meaning": "Conditional branch" },
+    "subprocess":     { "fill": "#F3E5F5", "stroke": "#7B1FA2", "shape": "rounded",   "meaning": "Nested sub-process" },
+    "waiting":        { "fill": "#ECEFF1", "stroke": "#546E7A", "shape": "rounded",   "meaning": "Wait / delay" },
+    "error-state":    { "fill": "#FFEBEE", "stroke": "#C62828", "shape": "rounded",   "meaning": "Error state", "strokeWidth": 3 },
+    "ok":             { "fill": "#064E3B", "stroke": "#34D399", "text": "#D1FAE5",    "meaning": "Healthy / normal" },
+    "degraded":       { "fill": "#3F2E15", "stroke": "#FBBF24", "text": "#FEF3C7",    "meaning": "Degraded / warning" },
+    "critical":       { "fill": "#3F1515", "stroke": "#F87171", "text": "#FEE2E2",    "meaning": "Critical / down" },
+    "unknown":        { "fill": "#1E293B", "stroke": "#64748B", "text": "#CBD5E1",    "meaning": "Unknown state" },
+    "maintenance":    { "fill": "#1E1B4B", "stroke": "#818CF8", "text": "#E0E7FF",    "meaning": "Maintenance / read-only" }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Zone/layer container color hierarchy — each nested level gets 8% more opacity and one gradient darker stroke.",
+  "levels": {
+    "l0": { "desc": "Page background — no visual border" },
+    "l1": { "opacity": 40, "desc": "Cloud provider / top-level domain" },
+    "l2": { "opacity": 48, "desc": "VPC / Region" },
+    "l3": { "opacity": 56, "desc": "Subnet / Availability Zone" },
+    "l4": { "opacity": 64, "desc": "Security Group / micro-boundary" }
+  },
+  "rules": [
+    "Each deeper level adds 8% opacity",
+    "Border color darkens one gradient step per level",
+    "Zone label inherits the zone's stroke color",
+    "Child nodes inside a zone use zone-local coordinates"
+  ]
+}

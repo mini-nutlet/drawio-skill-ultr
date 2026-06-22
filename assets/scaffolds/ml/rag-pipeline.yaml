@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "name": "RAG Pipeline",
+    "version": "1.0",
+    "diagramType": "ml-model",
+    "layout": "FLOW",
+    "theme": "analytical",
+    "canvas": "ppt-16:9",
+    "title": "RAG 检索增强生成流程",
+    "nodeCount": 10,
+    "description": "Retrieval-Augmented Generation: Document → Chunk → Embed → Index → Retrieve → Generate"
+  },
+  "nodes": [
+    { "id": "docs", "label": "Documents", "layer": "ingest", "semantic": "compute", "x": 60, "y": 200, "width": 130, "height": 56 },
+    { "id": "chunk", "label": "Text Chunking", "layer": "ingest", "semantic": "compute", "x": 250, "y": 200, "width": 130, "height": 56 },
+    { "id": "embed", "label": "Embedding Model", "layer": "ingest", "semantic": "network", "x": 440, "y": 200, "width": 140, "height": 56 },
+    { "id": "vectordb", "label": "Vector DB", "layer": "ingest", "semantic": "storage", "shape": "cylinder3", "x": 640, "y": 200, "width": 120, "height": 60 },
+    { "id": "query", "label": "User Query", "layer": "retrieval", "semantic": "compute", "x": 60, "y": 440, "width": 130, "height": 56 },
+    { "id": "query-embed", "label": "Query Embedding", "layer": "retrieval", "semantic": "network", "x": 250, "y": 440, "width": 140, "height": 56 },
+    { "id": "retrieve", "label": "Similarity Search", "layer": "retrieval", "semantic": "async", "x": 450, "y": 440, "width": 140, "height": 56 },
+    { "id": "llm", "label": "LLM Generation", "layer": "generation", "semantic": "security", "x": 700, "y": 440, "width": 140, "height": 56 },
+    { "id": "output", "label": "Answer + Sources", "layer": "generation", "semantic": "compute", "x": 920, "y": 440, "width": 150, "height": 56, "bold": true }
+  ],
+  "edges": [
+    { "from": "docs", "to": "chunk", "type": "data-flow" },
+    { "from": "chunk", "to": "embed", "type": "data-flow" },
+    { "from": "embed", "to": "vectordb", "type": "data-flow" },
+    { "from": "query", "to": "query-embed", "type": "data-flow" },
+    { "from": "query-embed", "to": "retrieve", "type": "data-flow" },
+    { "from": "vectordb", "to": "retrieve", "type": "data-flow", "exitX": 0.5, "exitY": 1 },
+    { "from": "retrieve", "to": "llm", "type": "data-flow" },
+    { "from": "llm", "to": "output", "type": "data-flow" }
+  ]
+}

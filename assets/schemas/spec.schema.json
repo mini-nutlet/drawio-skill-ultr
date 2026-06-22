@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Draw.io YAML Spec Schema",
+  "type": "object",
+  "required": ["meta", "nodes"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name":        { "type": "string", "maxLength": 60 },
+        "version":     { "type": "string" },
+        "diagramType": { "enum": ["architecture","flowchart","uml-class","er-diagram","sequence","network-topology","ml-model","academic-figure"] },
+        "layout":      { "enum": ["LAYERED","TREE","FLOW","RADIAL","GRID"] },
+        "theme":       { "enum": ["blueprint","editorial","operations","analytical","narrative"] },
+        "mode":        { "enum": ["light","dark"] },
+        "canvas":      { "enum": ["ppt-16:9","ppt-4:3","a4-landscape","a4-portrait","social","wide","auto"] },
+        "title":       { "type": "string", "maxLength": 40 },
+        "nodeCount":   { "type": "integer", "minimum": 1, "maximum": 40 },
+        "description": { "type": "string", "maxLength": 200 }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id":          { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+          "label":       { "type": "string", "maxLength": 25 },
+          "tooltip":     { "type": "string", "maxLength": 80 },
+          "description": { "type": "string", "maxLength": 500 },
+          "layer":       { "type": "string" },
+          "semantic":    { "enum": ["compute","storage","network","external","security","async"] },
+          "shape":       { "enum": ["rounded-rectangle","rectangle","ellipse","rhombus","cylinder3","hexagon","step"] },
+          "x":           { "type": "number", "multipleOf": 10 },
+          "y":           { "type": "number", "multipleOf": 10 },
+          "width":       { "type": "number", "multipleOf": 10, "minimum": 60, "maximum": 300 },
+          "height":      { "type": "number", "multipleOf": 10, "minimum": 30, "maximum": 120 },
+          "parent":      { "type": "string" },
+          "fontSize":    { "type": "integer", "minimum": 8, "maximum": 22 },
+          "bold":        { "type": "boolean" },
+          "dashed":      { "type": "boolean" },
+          "fillColor":   { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+          "strokeColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to"],
+        "properties": {
+          "id":       { "type": "string" },
+          "from":     { "type": "string" },
+          "to":       { "type": "string" },
+          "label":    { "type": "string", "maxLength": 15 },
+          "type":     { "enum": ["sync-call","async-event","data-flow","auth-trust","error-fallback","conditional","deployment"] },
+          "exitX":    { "type": "number", "minimum": 0, "maximum": 1 },
+          "exitY":    { "type": "number", "minimum": 0, "maximum": 1 },
+          "entryX":   { "type": "number", "minimum": 0, "maximum": 1 },
+          "entryY":   { "type": "number", "minimum": 0, "maximum": 1 },
+          "animated": { "type": "boolean" },
+          "waypoints": { "type": "array", "items": { "type": "object", "properties": { "x": {"type":"number"}, "y": {"type":"number"} } } }
+        }
+      }
+    },
+    "zones":   { "type": "array" },
+    "labels":  { "type": "array" },
+    "legend":  { "type": "object" }
+  }
+}

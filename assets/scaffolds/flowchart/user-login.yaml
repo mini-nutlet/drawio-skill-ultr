@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "name": "User Login Flowchart",
+    "version": "1.0",
+    "diagramType": "flowchart",
+    "layout": "FLOW",
+    "theme": "blueprint",
+    "canvas": "ppt-16:9",
+    "title": "用户登录流程",
+    "nodeCount": 8,
+    "description": "Standard login flow with validation, OAuth2.0, JWT, and retry"
+  },
+  "nodes": [
+    { "id": "start", "label": "开始", "shape": "ellipse", "x": 60, "y": 480, "width": 80, "height": 40 },
+    { "id": "input", "label": "输入账号密码", "semantic": "compute", "x": 200, "y": 460, "width": 140, "height": 56 },
+    { "id": "validate", "label": "验证账号", "shape": "rhombus", "x": 390, "y": 440, "width": 110, "height": 90 },
+    { "id": "oauth", "label": "OAuth2.0 认证", "semantic": "external", "x": 570, "y": 460, "width": 140, "height": 56 },
+    { "id": "token", "label": "签发 JWT", "semantic": "security", "x": 770, "y": 460, "width": 120, "height": 56 },
+    { "id": "success", "label": "登录成功", "semantic": "compute", "x": 950, "y": 460, "width": 120, "height": 56, "bold": true },
+    { "id": "error", "label": "显示错误信息", "strokeColor": "#DC2626", "x": 400, "y": 600, "width": 130, "height": 56 },
+    { "id": "end", "label": "结束", "shape": "ellipse", "x": 1130, "y": 475, "width": 80, "height": 40 }
+  ],
+  "edges": [
+    { "from": "start", "to": "input", "type": "sync-call" },
+    { "from": "input", "to": "validate", "type": "sync-call" },
+    { "from": "validate", "to": "oauth", "type": "sync-call" },
+    { "from": "oauth", "to": "token", "type": "auth-trust" },
+    { "from": "token", "to": "success", "type": "sync-call" },
+    { "from": "success", "to": "end", "type": "sync-call" },
+    { "from": "validate", "to": "error", "type": "error-fallback", "exitX": 0.5, "exitY": 1 },
+    { "from": "error", "to": "input", "type": "conditional", "exitX": 0, "exitY": 0.5 }
+  ]
+}
