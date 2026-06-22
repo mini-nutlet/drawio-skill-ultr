@@ -1,11 +1,14 @@
 # Dependencies
 node_modules/
 
-# Generated output
+# Generated output (diagrams + build artifacts)
 output/
+dist/
+*.drawio
 
 # draw.io temporary files
 *.dtmp
+.$*.dtmp
 
 # OS files
 .DS_Store

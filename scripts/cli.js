@@ -312,7 +312,6 @@ function renderEdge(id, edge, nodes, theme) {
     `strokeColor=${edgeColor}`,
     'strokeWidth=1.5',
     'endArrow=classic', 'endFill=1',
-    'curved=1',
     isAsync ? 'dashed=1;dashPattern=6 4' : '',
     edge.animated ? 'flowAnimation=1' : '',
   ].filter(Boolean).join(';');

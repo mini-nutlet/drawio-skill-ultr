@@ -36,7 +36,7 @@ function autofix(content) {
 
   // 4. Grid snap — round x, y, width, height to nearest 10
   fixed = fixed.replace(
-    /(x|y|width|height)="(\d+(?:\.\d+)?)"/g,
+    /\b(x|y|width|height)="(\d+(?:\.\d+)?)"/g,
     (match, attr, val) => {
       const rounded = Math.round(parseFloat(val) / 10) * 10;
       if (Math.abs(rounded - parseFloat(val)) > 0.01) {
