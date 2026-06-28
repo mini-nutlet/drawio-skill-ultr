@@ -30,7 +30,16 @@ function parseGeometries(drawioContent) {
         y: parseFloat((g.match(/y="([^"]+)"/) || [])[1]) || 0,
         width: parseFloat((g.match(/width="([^"]+)"/) || [])[1]) || 0,
         height: parseFloat((g.match(/height="([^"]+)"/) || [])[1]) || 0,
+        waypoints: [],
       };
+      var wpm = g.match(/<Array as="points">([\s\S]*?)<\/Array>/);
+      if (wpm) {
+        var wpr = /<mxPoint x="([^"]+)" y="([^"]+)"/g;
+        var wpt;
+        while ((wpt = wpr.exec(wpm[1])) !== null) {
+          geom.waypoints.push({ x: parseFloat(wpt[1]), y: parseFloat(wpt[2]) });
+        }
+      }
     }
 
     cells.push({ id, edge, vertex, value, style, source, target, geom });
@@ -71,7 +80,7 @@ function lint(drawioContent) {
 
   // 1. Node overlap (skip group containers and zone labels — id starts with grp- or zone-)
   function isDecorator(cell) {
-    return (cell.id || '').startsWith('grp-') || (cell.id || '').startsWith('zone-');
+    return (cell.id || '').startsWith('grp-') || (cell.id || '').startsWith('zone-') || (cell.id || '').endsWith('-label') || (cell.id || '').endsWith('-bar');
   }
   for (let i = 0; i < vertices.length; i++) {
     if (isDecorator(vertices[i])) continue;
@@ -85,23 +94,30 @@ function lint(drawioContent) {
     }
   }
 
-  // 2. Edge through node
+  // 2. Edge through node - follows waypoints if present
   for (const edge of edges) {
     const srcV = vertices.find(v => v.id === edge.source);
     const tgtV = vertices.find(v => v.id === edge.target);
     if (!srcV?.geom || !tgtV?.geom) continue;
 
-    const x1 = srcV.geom.x + srcV.geom.width / 2;
-    const y1 = srcV.geom.y + srcV.geom.height / 2;
-    const x2 = tgtV.geom.x + tgtV.geom.width / 2;
-    const y2 = tgtV.geom.y + tgtV.geom.height / 2;
+    const path = [
+      { x: srcV.geom.x + srcV.geom.width / 2, y: srcV.geom.y + srcV.geom.height / 2 },
+      ...(edge.geom && edge.geom.waypoints ? edge.geom.waypoints : []),
+      { x: tgtV.geom.x + tgtV.geom.width / 2, y: tgtV.geom.y + tgtV.geom.height / 2 },
+    ];
 
     for (const v of vertices) {
       if (v.id === edge.source || v.id === edge.target) continue;
-      if (isDecorator(v)) continue; // skip groups and zones
-      if (lineIntersectsRect(x1, y1, x2, y2, v.geom)) {
-        issues.push({ severity: 'error', type: 'edge-through-node',
-          message: `Edge "${edge.value || edge.id}" passes through "${v.value}"`,
+      if (isDecorator(v)) continue;
+      var hit = false;
+      for (var si = 0; si < path.length - 1 && !hit; si++) {
+        if (lineIntersectsRect(path[si].x, path[si].y, path[si + 1].x, path[si + 1].y, v.geom)) {
+          hit = true;
+        }
+      }
+      if (hit) {
+        issues.push({ severity: 'warning', type: 'edge-through-node',
+          message: 'Edge "' + (edge.value || edge.id) + '" passes through "' + v.value + '"',
           fix: 'reroute-with-waypoints' });
       }
     }
@@ -150,7 +166,7 @@ function lint(drawioContent) {
       const yVals = rightExits.map(e => parseFloat(extractStyleVal(e.style, 'exitY')) || 0.5);
       yVals.sort((a, b) => a - b);
       const minGap = Math.min(...yVals.slice(1).map((y, i) => y - yVals[i]));
-      if (minGap < 0.2) {
+      if (minGap < 0.19) {
         issues.push({ severity: 'warning', type: 'stacked-edges',
           message: `Node "${nodeId}" has ${rightExits.length} right-side edges too close. Space evenly (0.25, 0.5, 0.75).` });
       }

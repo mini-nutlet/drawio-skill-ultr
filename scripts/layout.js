@@ -38,12 +38,11 @@ const SPACING = {
  */
 function computeEdgeRouting(nodes, edges, zones, zoneMode = 'filled') {
   if (!edges || edges.length === 0) return edges;
-  if (zones.length < 2) return edges; // single zone — no boundary crossing
 
   const nodeMap = new Map();
   for (const n of nodes) nodeMap.set(n.id || n.label, n);
 
-  // Build zone boundary map: for each zone, record its top Y and bottom Y
+  // Build zone boundary map sorted by Y position
   const zoneBounds = zones.map(z => ({
     id: z.id,
     layer: z.layer,
@@ -53,67 +52,68 @@ function computeEdgeRouting(nodes, edges, zones, zoneMode = 'filled') {
     right: z.x + z.width,
   })).sort((a, b) => a.top - b.top);
 
+  const snap = (v) => { const r = Math.round(v / 10) * 10; return Object.is(r, -0) ? 0 : r; };
+
   const routedEdges = edges.map(edge => {
-    const srcId = typeof edge === 'string' ? edge : edge.from;
-    const tgtId = typeof edge === 'string' ? edge.split('->')[1] : edge.to;
+    const srcId = edge.from;
+    const tgtId = edge.to;
     const src = nodeMap.get(srcId);
     const tgt = nodeMap.get(tgtId);
 
-    // If either endpoint missing, or same zone, no waypoint needed
     if (!src || !tgt) return { ...edge };
 
     const srcLayer = src.layer || 'default';
     const tgtLayer = tgt.layer || 'default';
-    if (srcLayer === tgtLayer) return { ...edge };
+    if (zones.length < 2) return { ...edge };
 
-    // Check if this edge crosses a zone boundary
-    const srcY = src.y + (src.height || SPACING.NODE_H) / 2;
-    const tgtY = tgt.y + (tgt.height || SPACING.NODE_H) / 2;
-    const topY = Math.min(srcY, tgtY);
-    const botY = Math.max(srcY, tgtY);
+    const srcX = (src.x || 0) + ((src.width || SPACING.NODE_W) / 2);
+    const tgtX = (tgt.x || 0) + ((tgt.width || SPACING.NODE_W) / 2);
 
-    // Find zone boundaries between src and tgt
-    let crossesZone = false;
-    for (const zb of zoneBounds) {
-      if (zb.top > topY + 10 && zb.top < botY - 10) {
-        crossesZone = true;
-        break;
+    // Find zone indices
+    const srcIdx = zoneBounds.findIndex(zb => zb.layer === srcLayer);
+    const tgtIdx = zoneBounds.findIndex(zb => zb.layer === tgtLayer);
+    if (srcIdx < 0 || tgtIdx < 0) return { ...edge };
+
+    if (srcIdx === tgtIdx) {
+      // Same-layer: route through the zone bottom gap
+      const gapY = snap(zoneBounds[srcIdx].bottom + SPACING.EDGE_CLEARANCE);
+      if (Math.abs(srcX - tgtX) > SPACING.H_GAP) {
+        return { ...edge, waypoints: [
+          { x: snap(srcX), y: gapY },
+          { x: snap(tgtX), y: gapY },
+        ], exitX: 1, exitY: 0.5, entryX: 0, entryY: 0.5 };
       }
-    }
-    if (!crossesZone) return { ...edge };
-
-    // Compute midpoint Y in the gap between the two zones
-    const srcX = src.x + (src.width || SPACING.NODE_W) / 2;
-    const tgtX = tgt.x + (tgt.width || SPACING.NODE_W) / 2;
-
-    // Find the gap between the source zone bottom and target zone top
-    let gapTop, gapBottom;
-    for (let i = 0; i < zoneBounds.length; i++) {
-      const zb = zoneBounds[i];
-      if ((zb.layer === srcLayer || zb.layer === tgtLayer) && i + 1 < zoneBounds.length) {
-        const nextZb = zoneBounds[i + 1];
-        if (nextZb.layer === tgtLayer || nextZb.layer === srcLayer) {
-          gapTop = zb.bottom;
-          gapBottom = nextZb.top;
-          break;
-        }
-      }
+      return { ...edge };
     }
 
-    // Fallback: use midpoint between src and tgt Y (with adaptive gap)
-    if (!gapTop) gapTop = botY - 50;
-    if (!gapBottom) gapBottom = topY + 50;
-
-    const midY = Math.round((gapTop + gapBottom) / 2 / 10) * 10;
-
-    // Insert a horizontal-then-vertical waypoint to clear zone boundaries
-    const waypoints = [
-      { x: Math.round(srcX / 10) * 10, y: Math.round((srcY + midY) / 2 / 10) * 10 },
-      { x: Math.round(tgtX / 10) * 10, y: Math.round((tgtY + midY) / 2 / 10) * 10 },
-    ];
+    // Cross-layer: insert two waypoints per inter-zone gap
+    // First at srcX (vertical from source), second at tgtX (horizontal across gap)
+    // This creates a clean zigzag path avoiding nodes in between
+    const lo = Math.min(srcIdx, tgtIdx);
+    const hi = Math.max(srcIdx, tgtIdx);
+    const waypoints = [];
+    for (let i = lo; i < hi; i++) {
+      const gapY = snap((zoneBounds[i].bottom + zoneBounds[i + 1].top) / 2);
+      waypoints.push({ x: snap(srcX), y: gapY });
+      waypoints.push({ x: snap(tgtX), y: gapY });
+    }
 
     return { ...edge, waypoints, exitX: 1, exitY: 0.5, entryX: 0, entryY: 0.5 };
   });
+
+  // Post-process: auto-space exitY for nodes with many right-side exits
+  const srcExitCount = {};
+  for (const edge of routedEdges) {
+    srcExitCount[edge.from] = (srcExitCount[edge.from] || 0) + 1;
+  }
+  for (let i = 0; i < routedEdges.length; i++) {
+    const e = routedEdges[i];
+    const count = srcExitCount[e.from] || 1;
+    if (count > 2) {
+      const idx = routedEdges.slice(0, i).filter(prev => prev.from === e.from).length;
+      e.exitY = Number((0.1 + ((0.8 * idx) / (count - 1))).toFixed(2));
+    }
+  }
 
   return routedEdges;
 }
@@ -214,8 +214,8 @@ function layeredLayout(nodes, edges, specZones = [], canvasW = 1920, zoneMode = 
 
     // Assign node positions
     arr.forEach((n, j) => {
-      n.x = nodeStartX + j * (SPACING.NODE_W + SPACING.H_GAP);
-      n.y = currentY + SPACING.ZONE_PAD_TOP;
+      n.x = Math.round((nodeStartX + j * (SPACING.NODE_W + SPACING.H_GAP)) / 10) * 10;
+      n.y = Math.round((currentY + SPACING.ZONE_PAD_TOP) / 10) * 10;
       n.width = SPACING.NODE_W;
       n.height = SPACING.NODE_H;
     });
@@ -230,13 +230,13 @@ function layeredLayout(nodes, edges, specZones = [], canvasW = 1920, zoneMode = 
       label: zoneLabel,
       layer: layerOrder[i],
       x: startX,
-      y: currentY,
+      y: Math.round(currentY / 10) * 10,
       width: zoneW,
       height: SPACING.ZONE_PAD_TOP + SPACING.NODE_H + SPACING.ZONE_PAD_BOTTOM,
     });
 
     // ★ Next layer starts after adaptive V_GAP gap
-    currentY += zoneH + vGap;
+    currentY += Math.round((zoneH + vGap) / 10) * 10;
   }
 
   // Flatten nodes

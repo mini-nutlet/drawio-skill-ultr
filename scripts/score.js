@@ -54,7 +54,16 @@ function parseCells(content) {
         y: parseFloat((g.match(/y="([^"]+)"/) || [])[1]) || 0,
         width: parseFloat((g.match(/width="([^"]+)"/) || [])[1]) || 0,
         height: parseFloat((g.match(/height="([^"]+)"/) || [])[1]) || 0,
+        waypoints: [],
       };
+      var wpm = g.match(/<Array as="points">([\s\S]*?)<\/Array>/);
+      if (wpm) {
+        var wpr = /<mxPoint x="([^"]+)" y="([^"]+)"/g;
+        var wpt;
+        while ((wpt = wpr.exec(wpm[1])) !== null) {
+          geom.waypoints.push({ x: parseFloat(wpt[1]), y: parseFloat(wpt[2]) });
+        }
+      }
     }
     cells.push({ id, edge, vertex, value, style, source, target, geom });
   }
@@ -180,6 +189,11 @@ function scoreTypography(cells) {
   return { score: Math.round((1 - penalty) * 100), details, penalty };
 }
 
+function isDecoratorScorer(cell) {
+  var id = cell.id || '';
+  return id.startsWith('grp-') || id.startsWith('zone-') || id.endsWith('-label') || id.endsWith('-bar');
+}
+
 function scoreEdgeQuality(cells) {
   const edges = cells.filter(c => c.edge);
   const vertices = cells.filter(c => c.vertex && c.geom);
@@ -195,7 +209,7 @@ function scoreEdgeQuality(cells) {
     const exitX = extractStyleVal(edge.style, 'exitX');
     if (exitX === '0') leftExits++;
 
-    // Simple crossing check: edge line intersects non-endpoint node bboxes
+    // Simple crossing check: follows waypoints if present
     const sv = vertexMap[edge.source];
     const tv = vertexMap[edge.target];
     if (sv?.geom && tv?.geom) {
@@ -203,16 +217,25 @@ function scoreEdgeQuality(cells) {
       const y1 = sv.geom.y + sv.geom.height / 2;
       const x2 = tv.geom.x + tv.geom.width / 2;
       const y2 = tv.geom.y + tv.geom.height / 2;
+      const path = [
+        { x: x1, y: y1 },
+        ...(edge.geom && edge.geom.waypoints ? edge.geom.waypoints : []),
+        { x: x2, y: y2 },
+      ];
       for (const v of vertices) {
         if (v.id === edge.source || v.id === edge.target) continue;
+        if (isDecoratorScorer(v)) continue;
         const rx = v.geom.x - 4, ry = v.geom.y - 4;
         const rw = v.geom.width + 8, rh = v.geom.height + 8;
-        const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
-        const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
-        if (!(maxX < rx || minX > rx + rw || maxY < ry || minY > ry + rh)) {
-          crossings++;
-          break;
+        var hit = false;
+        for (var si = 0; si < path.length - 1 && !hit; si++) {
+          const minX = Math.min(path[si].x, path[si + 1].x), maxX = Math.max(path[si].x, path[si + 1].x);
+          const minY = Math.min(path[si].y, path[si + 1].y), maxY = Math.max(path[si].y, path[si + 1].y);
+          if (!(maxX < rx || minX > rx + rw || maxY < ry || minY > ry + rh)) {
+            hit = true;
+          }
         }
+        if (hit) { crossings++; break; }
       }
     }
   }
@@ -220,7 +243,7 @@ function scoreEdgeQuality(cells) {
   if (leftExits > 0) details.push(`${leftExits} left-side exit(s) — prefer right/bottom`);
   if (crossings > 0) details.push(`${crossings} edge(s) pass through nodes`);
 
-  const penalty = Math.min(1, (leftExits * 0.1 + crossings * 0.25) / Math.max(edges.length, 1));
+  const penalty = Math.min(1, (leftExits * 0.1 + crossings * 0.4) / Math.max(edges.length, 1));
   return { score: Math.round((1 - penalty) * 100), details, penalty };
 }
 

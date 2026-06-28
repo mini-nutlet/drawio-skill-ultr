@@ -9,26 +9,104 @@
     "title": "事件驱动架构",
     "nodeCount": 10,
     "description": "Kafka-based event-driven architecture with CQRS pattern",
-    "tags": ["kafka", "event", "cqrs", "message", "queue", "async"]
+    "tags": [
+      "kafka",
+      "event",
+      "cqrs",
+      "message",
+      "queue",
+      "async"
+    ]
   },
   "zones": [
-    { "id": "zone-producers", "layer": "producers", "label": "Producers" },
-    { "id": "zone-bus", "layer": "bus", "label": "Event Bus" },
-    { "id": "zone-consumers", "layer": "consumers", "label": "Consumers" }
+    {
+      "id": "zone-producers",
+      "layer": "producers",
+      "label": "Producers"
+    },
+    {
+      "id": "zone-bus",
+      "layer": "bus",
+      "label": "Event Bus"
+    },
+    {
+      "id": "zone-consumers",
+      "layer": "consumers",
+      "label": "Consumers"
+    }
   ],
   "nodes": [
-    { "id": "svc-order", "label": "Order Service" },
-    { "id": "svc-payment", "label": "Payment Service" },
-    { "id": "kafka", "label": "Apache Kafka", "layer": "bus", "semantic": "async", "shape": "hexagon", "x": 850, "y": 320, "width": 160 },
-    { "id": "svc-notify", "label": "Notification" },
-    { "id": "svc-analytics", "label": "Analytics" },
-    { "id": "svc-audit", "label": "Audit Log" }
+    {
+      "id": "svc-order",
+      "label": "Order Service",
+      "layer": "producers"
+    },
+    {
+      "id": "svc-payment",
+      "label": "Payment Service",
+      "layer": "producers"
+    },
+    {
+      "id": "kafka",
+      "label": "Apache Kafka",
+      "layer": "bus",
+      "semantic": "async",
+      "shape": "hexagon",
+      "x": 850,
+      "y": 320,
+      "width": 160
+    },
+    {
+      "id": "svc-notify",
+      "label": "Notification",
+      "layer": "producers"
+    },
+    {
+      "id": "svc-analytics",
+      "label": "Analytics",
+      "layer": "producers"
+    },
+    {
+      "id": "svc-audit",
+      "label": "Audit Log",
+      "layer": "producers"
+    }
   ],
   "edges": [
-    { "from": "svc-order", "to": "kafka", "type": "async-event", "exitX": 1, "exitY": 0.5 },
-    { "from": "svc-payment", "to": "kafka", "type": "async-event", "exitX": 1, "exitY": 0.5 },
-    { "from": "kafka", "to": "svc-notify", "type": "async-event", "exitX": 0, "exitY": 0.5 },
-    { "from": "kafka", "to": "svc-analytics", "type": "async-event", "exitX": 0.5, "exitY": 1 },
-    { "from": "kafka", "to": "svc-audit", "type": "async-event", "exitX": 1, "exitY": 0.5 }
+    {
+      "from": "svc-order",
+      "to": "kafka",
+      "type": "async-event",
+      "exitX": 1,
+      "exitY": 0.5
+    },
+    {
+      "from": "svc-payment",
+      "to": "kafka",
+      "type": "async-event",
+      "exitX": 1,
+      "exitY": 0.5
+    },
+    {
+      "from": "kafka",
+      "to": "svc-notify",
+      "type": "async-event",
+      "exitX": 1,
+      "exitY": 0.5
+    },
+    {
+      "from": "kafka",
+      "to": "svc-analytics",
+      "type": "async-event",
+      "exitX": 0.5,
+      "exitY": 1
+    },
+    {
+      "from": "kafka",
+      "to": "svc-audit",
+      "type": "async-event",
+      "exitX": 1,
+      "exitY": 0.5
+    }
   ]
 }
